@@ -63,5 +63,32 @@ class TestConverter(unittest.TestCase):
         self.assertEqualCode(convert(code), expected)
 
     def test_match(self):
-        # ToDo
-        pass
+        code = dedent("""\
+        a = 3
+        match a:
+            case 1:
+                print(1)
+            case 2:
+                print(2)
+            case x if x <= 5:
+                print("o", x)
+            case _:
+                print("other")
+        """)
+        expected = dedent("""\
+        a = 3
+        if (__match_target := a) and False:
+            pass
+        elif __match_target == 1:
+            print(1)
+        elif __match_target == 2:
+            print(2)
+        elif (x := __match_target) and x <= 5:
+            print('o', x)
+        elif (__ := __match_target):
+            print('other')
+        else:
+            pass
+        """)
+
+        self.assertEqualCode(convert(code), expected)
