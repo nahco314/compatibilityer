@@ -142,9 +142,9 @@ class Converter(ast.NodeTransformer):
         if node.pattern is not None:
             raise NotImplementedError()
 
-        name = node.name if node.name is not None else "__"
+        name = node.name if node.name is not None else "_"
 
-        return ast.NamedExpr(ast.Name(name), target)
+        return ast.BoolOp(ast.Or(), [ast.NamedExpr(ast.Name(name), target), ast.Constant(True)])
 
     def convert_MatchOr(self, node: ast.MatchOr, target: ast.expr) -> ast.expr:
         return ast.BoolOp(ast.Or(), [self.convert_pattern(p, target) for p in node.patterns])
