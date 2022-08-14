@@ -83,9 +83,9 @@ class TestConverter(unittest.TestCase):
             print(1)
         elif __match_target == 2:
             print(2)
-        elif (x := __match_target) and x <= 5:
+        elif ((x := __match_target) or True) and x <= 5:
             print('o', x)
-        elif (__ := __match_target):
+        elif ((_ := __match_target) or True):
             print('other')
         else:
             pass
