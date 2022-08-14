@@ -45,4 +45,4 @@ def convert_dir_with_copy(dir_: Path, output_dir: Path, converter: Type[Converte
     excludes = ["--exclude", *map(str, excludes)] if excludes else []
 
     subprocess.run(["rsync", "-a", dir_, output_dir, *excludes], check=True)
-    convert_dir(output_dir, Converter)
+    convert_dir(output_dir, converter, head)
