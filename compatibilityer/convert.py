@@ -4,6 +4,7 @@ from compatibilityer.converter import Converter
 
 import ast
 from pathlib import Path
+import subprocess
 
 
 HEAD = """\
@@ -33,3 +34,15 @@ def convert_dir(dir_: Path, converter: Type[Converter] = Converter, head: str = 
         with open(file, "w") as f:
             nc = convert_file(c, converter, head)
             f.write(nc)
+
+
+def convert_dir_with_copy(dir_: Path, output_dir: Path, converter: Type[Converter] = Converter, head: str = HEAD) -> None:
+    excludes = []
+
+    if output_dir in dir_.glob("**/*"):
+        excludes.append(output_dir)
+
+    excludes = ["--exclude", *map(str, excludes)] if excludes else []
+
+    subprocess.run(["rsync", "-a", dir_, output_dir, *excludes], check=True)
+    convert_dir(output_dir, Converter)

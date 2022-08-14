@@ -1,11 +1,10 @@
 from typing import Type
 
-from compatibilityer.convert import convert_dir
+from compatibilityer.convert import convert_dir_with_copy
 from compatibilityer.converter import Converter
 
 import argparse
 from pathlib import Path
-import subprocess
 
 
 def main():
@@ -19,15 +18,7 @@ def main():
     dir_: Path
     output_dir: Path
 
-    excludes = []
-
-    if output_dir in dir_.glob("**/*"):
-        excludes.append(output_dir)
-
-    excludes = ["--exclude", *map(str, excludes)] if excludes else []
-
-    subprocess.run(["rsync", "-a", dir_, output_dir, *excludes], check=True)
-    convert_dir(output_dir, Converter)
+    convert_dir_with_copy(dir_, output_dir, Converter)
 
 
 if __name__ == '__main__':
