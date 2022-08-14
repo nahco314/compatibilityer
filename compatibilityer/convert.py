@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 HEAD = """\
-# @converted by compatibilityer.convert.convert
+# @converted by compatibilityer
 
 """
 
