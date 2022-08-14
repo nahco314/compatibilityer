@@ -15,9 +15,19 @@ def main():
     parser.add_argument("output_dir", type=Path, help="directory to output converted files")
 
     args = parser.parse_args()
+    dir_, output_dir = args.dir, args.output_dir
+    dir_: Path
+    output_dir: Path
 
-    subprocess.run(["cp", "-r", "-T", args.dir, args.output_dir], check=True)
-    convert_dir(args.output_dir, Converter)
+    excludes = []
+
+    if output_dir in dir_.glob("**/*"):
+        excludes.append(output_dir)
+
+    excludes = ["--exclude", *map(str, excludes)] if excludes else []
+
+    subprocess.run(["rsync", "-a", dir_, output_dir, *excludes], check=True)
+    convert_dir(output_dir, Converter)
 
 
 if __name__ == '__main__':
