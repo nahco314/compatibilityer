@@ -148,6 +148,3 @@ class Converter(ast.NodeTransformer):
 
     def convert_MatchOr(self, node: ast.MatchOr, target: ast.expr) -> ast.expr:
         return ast.BoolOp(ast.Or(), [self.convert_pattern(p, target) for p in node.patterns])
-
-
-a = [1]
