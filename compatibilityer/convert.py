@@ -5,7 +5,6 @@ from compatibilityer.converter import Converter
 import ast
 from pathlib import Path
 import subprocess
-import time
 
 
 HEAD = """\
@@ -46,5 +45,4 @@ def convert_dir_with_copy(dir_: Path, output_dir: Path, converter: Type[Converte
     excludes = ["--exclude", *map(str, excludes)] if excludes else []
 
     subprocess.run(["rsync", "-a", dir_, output_dir, *excludes], check=True)
-    time.sleep(1)  # because convert_dir is executed before all files are copied, which may result in an error.
     convert_dir(output_dir, converter, head)
