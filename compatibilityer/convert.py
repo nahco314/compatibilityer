@@ -1,5 +1,6 @@
 from typing import Type
 
+from compatibilityer.__version__ import __version__
 from compatibilityer.converter import Converter
 
 import ast
@@ -7,8 +8,8 @@ from pathlib import Path
 import subprocess
 
 
-HEAD = """\
-# @converted by compatibilityer
+HEAD = f"""\
+# @converted by compatibilityer {__version__}
 
 """
 

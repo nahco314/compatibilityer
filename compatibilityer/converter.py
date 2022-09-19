@@ -148,3 +148,44 @@ class Converter(ast.NodeTransformer):
 
     def convert_MatchOr(self, node: ast.MatchOr, target: ast.expr) -> ast.expr:
         return ast.BoolOp(ast.Or(), [self.convert_pattern(p, target) for p in node.patterns])
+
+
+class Converter_3_6(Converter):
+    target_version = (3, 6, 0)
+    invalid_typing_names = Converter.invalid_typing_names + (
+        # 3.8
+        "Literal",
+        "Final",
+        "Protocol",
+        "runtime_checkable",  # function
+        "TypedDict",
+        "SupportsIndex",
+        "final",
+        "get_origin",
+        # 3.9
+        "OrderedDict",
+        "ForwardRef",
+    )
+
+    def visit_ImportFrom(self, node: ast.ImportFrom) -> ast.ImportFrom:
+        if node.module == "__future__":
+            names = []
+            for alias in node.names:
+                if alias.name == "annotations":
+                    continue
+                names.append(alias)
+
+            if not names:
+                res = None
+            else:
+                res = ast.ImportFrom("__future__", names, node.level)
+        else:
+            res = super().visit_ImportFrom(node)
+
+        return res
+
+    def visit_Match(self, node: ast.Match) -> ast.If:
+        raise NotImplementedError("Match is not supported in Python 3.7 by Compatibilityer")
+
+    def visit_NamedExpr(self, node: ast.NamedExpr) -> ast.NamedExpr:
+        raise NotImplementedError("NamedExpr is not supported in Python 3.7 by Compatibilityer")

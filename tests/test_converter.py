@@ -1,6 +1,6 @@
 import unittest
 
-from compatibilityer.converter import Converter
+from compatibilityer.converter import Converter, Converter_3_6
 from compatibilityer.convert import convert
 
 import ast
@@ -92,3 +92,15 @@ class TestConverter(unittest.TestCase):
         """)
 
         self.assertEqualCode(convert(code), expected)
+
+    def test_future_annotation(self):
+        code = dedent("""\
+        from __future__ import annotations
+
+        a: list[int] = [1, 2, 3]
+        """)
+        expected = dedent("""\
+        a: 'list[int]' = [1, 2, 3]
+        """)
+
+        self.assertEqualCode(convert(code, Converter_3_6), expected)
