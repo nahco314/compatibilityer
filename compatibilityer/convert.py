@@ -1,6 +1,6 @@
 from typing import Type
 
-from compatibilityer.__version__ import __version__
+from compatibilityer.version import __version__
 from compatibilityer.converter import Converter
 
 import ast
