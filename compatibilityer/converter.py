@@ -132,6 +132,7 @@ class Converter(ast.NodeTransformer):
         terms = [ast.Call(
             ast.Name("isinstance"),
             [target, node.cls],
+            [],
         )]
         for i in range(len(node.kwd_attrs)):
             terms.append(self.convert_pattern(node.kwd_patterns[i], ast.Attribute(target, node.kwd_attrs[i])))
