@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "compatibilityer"
-version = "0.3.5"
+version = "0.3.6"
 description = "Tool to convert Python code to work with older versions"
 authors = ["nahco314 <nahco3_ta@yahoo.co.jp>"]
 license = "MIT"
